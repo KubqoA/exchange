@@ -2,22 +2,18 @@
   (:require [environ.core :refer [env]]
             [pohjavirta.server :as server]
             [reitit.ring :as ring]
-            [jsonista.core :as j]))
-
-(defn json-encode
-  [httpCode obj]
-  {:status httpCode
-   :headers {"Content-Type" "application/json"}
-   :body (j/write-value-as-bytes obj)})
+            [muuntaja.middleware :as mw]))
 
 (defn json-handler [_]
-  (json-encode 200 {:message "Hello World"}))
+  {:status 200
+   :body {:message "Hello World"}})
 
 (def app
-  (ring/ring-handler
-    (ring/router
-      [["/json" json-handler]])
-    (ring/create-default-handler)))
+  (-> (ring/ring-handler
+        (ring/router
+          [["/json" json-handler]])
+        (ring/create-default-handler))
+      (mw/wrap-format)))
 
 (def start
   "Starts the web server"
