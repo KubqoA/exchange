@@ -1,2 +1,8 @@
-{:server-host       "0.0.0.0"
+{:database-host     "localhost"
+ :database-port     "5432"
+ :database-dbname   "bitcoin_exchange"
+ :database-username "postgres"
+ :database-password ""
+ :server-host       "0.0.0.0"
  :server-port       "8080"}
+
