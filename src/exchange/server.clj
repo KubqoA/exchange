@@ -1,5 +1,6 @@
 (ns exchange.server
-  (:require [pohjavirta.server :as server]
+  (:require [environ.core :refer [env]]
+            [pohjavirta.server :as server]
             [reitit.ring :as ring]
             [jsonista.core :as j]))
 
@@ -23,8 +24,8 @@
   (let [cpus (.availableProcessors (Runtime/getRuntime))]
     (-> app
       (server/create
-        {:port 8080
-         :host "0.0.0.0"
+        {:port (env :server-port 8080)
+         :host (env :server-host "0.0.0.0")
          :io-threads (* 2 cpus)
          :worker-threads (* 8 cpus)})
       server/start)))
